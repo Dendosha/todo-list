@@ -1,0 +1,147 @@
+.--selectlist {
+	--selectlist-accent-color: #fff;
+	--selectlist-active-color: #c5c5c5;
+
+	--selected-option-color: #969696;
+	--hover-option-color: #c5c5c5;
+
+	--scrollbar-track-color: #fff;
+	--scrollbar-thumb-color: #000;
+
+	position: relative;
+
+	display: inline-grid;
+	width: rem(300);
+
+	border-radius: rem(10);
+	box-shadow: 0 0 rem(10) transparent;
+	transition: box-shadow 0.3s ease-in-out;
+
+	color: #000;
+	font-size: rem(20);
+
+	@media (any-hover: hover) {
+		&:hover {
+			box-shadow: 0 0 rem(10) var(--selectlist-accent-color);
+		}
+	}
+
+	&:focus-within {
+		box-shadow: 0 0 rem(10) var(--selectlist-accent-color);
+	}
+
+	// .--selectlist__combobox
+
+	&__combobox {
+		cursor: pointer;
+		position: relative;
+		z-index: 2;
+
+		user-select: none;
+
+		display: flex;
+		align-items: center;
+		padding: rem(10) rem(40) rem(10) rem(10);
+		border-radius: rem(5);
+
+		background-color: var(--selectlist-accent-color);
+
+		transition: border-radius 0.1s ease 0.22s, background-color 0.3s ease;
+
+		&::after {
+			content: '';
+			position: absolute;
+			right: rem(10);
+
+			border: rem(10) solid transparent;
+			border-top: rem(10) solid currentColor;
+			border-bottom: 0;
+
+			transition: transform 0.3s ease;
+		}
+
+		&[aria-expanded="true"] {
+			background-color: var(--selectlist-active-color);
+
+			transition: border-radius 0s ease, background-color 0.3s ease;
+
+			&::after {
+				transform: scale(1, -1);
+			}
+
+			&~.--selectlist__listbox-wrapper {
+				grid-template-rows: 1fr;
+				top: calc(100% + rem(10));
+			}
+		}
+	}
+
+	// .--selectlist__listbox-wrapper
+
+	&__listbox-wrapper {
+		position: absolute;
+		top: 100%;
+
+		display: grid;
+		grid-template-rows: 0fr;
+		width: 100%;
+
+		transition: 0.3s ease;
+	}
+
+	// .--selectlist__listbox
+
+	&__listbox {
+		display: flex;
+		flex-direction: column;
+
+		border-radius: rem(5);
+		overflow-y: scroll;
+		overflow-x: hidden;
+
+		&::-webkit-scrollbar {
+			width: rem(10);
+		}
+
+		&::-webkit-scrollbar-track {
+			border-radius: 0 rem(5) rem(5) 0;
+			background-color: var(--scrollbar-track-color);
+		}
+
+		&::-webkit-scrollbar-thumb {
+			border: rem(2) solid var(--scrollbar-track-color);
+			background-color: var(--scrollbar-thumb-color);
+			border-radius: rem(5);
+		}
+	}
+
+	// .--selectlist__option
+
+	&__option {
+		cursor: pointer;
+		position: relative;
+
+		background-color: var(--selectlist-accent-color);
+		padding: rem(10) rem(40) rem(10) rem(10);
+
+		transition: background-color 0.3s ease;
+
+		&:not(:last-child) {
+			border-bottom: rem(2) solid #000;
+		}
+
+		&[aria-selected="true"] {
+			background-color: var(--selected-option-color);
+		}
+
+		@media (any-hover: hover) {
+			&:hover {
+				background-color: var(--hover-option-color);
+			}
+		}
+	}
+
+	// .--selectlist__options-separator
+
+	&__options-separator {}
+}

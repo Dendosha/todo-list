@@ -1,0 +1,87 @@
+.--custom-checkbox {
+	--checkmark-color: #fff;
+
+	position: relative;
+
+	&>.--checkbox-checkmark,
+	&>.--checkbox-label {
+		cursor: pointer;
+	}
+
+	@media (any-hover: hover) {
+		&:hover:has(input[type="checkbox"]:not(:disabled)) {
+			&>.--checkbox-checkmark {
+				box-shadow: 0 0 rem(8) var(--checkmark-color);
+			}
+
+			&>.--checkbox-label {
+				text-shadow: 0 0 rem(4) var(--checkmark-color);
+			}
+		}
+	}
+
+	&>input[type="checkbox"]:checked+.--checkbox-checkmark {
+		&::before {
+			transform: scale(1);
+		}
+	}
+
+	&:focus-within {
+		&>.--checkbox-checkmark {
+			box-shadow: 0 0 rem(8) var(--checkmark-color);
+		}
+
+		&>.--checkbox-label {
+			text-shadow: 0 0 rem(4) var(--checkmark-color);
+		}
+	}
+
+	&>input[type="checkbox"]:disabled {
+
+		&~.--checkbox-checkmark,
+		&~.--checkbox-label {
+			filter: brightness(0.5);
+		}
+	}
+
+	.--checkbox-checkmark {
+		position: absolute;
+		top: 0;
+		left: 0;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		width: rem(20);
+		height: rem(20);
+		border: rem(2) solid var(--checkmark-color);
+		border-radius: rem(6);
+
+		box-shadow: 0 0 rem(8) transparent;
+
+		transition: box-shadow 0.3s ease;
+
+		&::before {
+			content: '';
+
+			background-color: var(--checkmark-color);
+
+			width: rem(10);
+			height: rem(10);
+			border-radius: rem(2);
+
+			transform: scale(0);
+			transition: transform 0.08s ease;
+		}
+	}
+
+	.--checkbox-label {
+		display: inline-block;
+		padding-left: rem(30);
+
+		text-shadow: 0 0 rem(4) transparent;
+
+		transition: text-shadow 0.3s ease;
+	}
+}

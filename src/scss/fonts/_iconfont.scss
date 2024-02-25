@@ -1,0 +1,37 @@
+@font-face {
+	font-family: 'icons';
+	src: url('../fonts/icons.woff2#icons') format('woff2'), url('../fonts/icons.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
+%icons {
+	font-family: 'icons';
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+[class^="--icon-"],
+[class*=" --icon-"] {
+	@extend %icons;
+	display: block;
+}
+
+.--icon-1:before {
+	content: "\e900";
+}
+
+.--icon-2:before {
+	content: "\e901";
+}
+
+.--icon-3:before {
+	content: "\e902";
+}

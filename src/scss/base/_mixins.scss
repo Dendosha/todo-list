@@ -1,0 +1,23 @@
+// Default mixins
+
+@mixin adaptiveValue($minValue, $maxValue, $property, $minViewport: 320, $maxViewport: $containerWidth) {
+	$fluidValue: calc((100 * ($maxValue - $minValue)) / ($maxViewport - $minViewport));
+	$remValue: calc(($minViewport * $maxValue - $maxViewport * $minValue) / ($minViewport - $maxViewport));
+
+	$fluidValue: round($fluidValue, 2);
+	$remValue: round(calc($remValue / 16), 2);
+
+	#{$property}: clamp(#{calc($minValue / 16) + rem}, #{$fluidValue + vw} + #{$remValue + rem}, #{calc($maxValue / 16) + rem})
+}
+
+@mixin adaptiveFont($minValue, $maxValue, $minViewport: 320, $maxViewport: $containerWidth) {
+	$fluidValue: calc((100 * ($maxValue - $minValue)) / ($maxViewport - $minViewport));
+	$remValue: calc(($minViewport * $maxValue - $maxViewport * $minValue) / ($minViewport - $maxViewport));
+
+	$fluidValue: round($fluidValue, 2);
+	$remValue: round(calc($remValue / 16), 2);
+
+	font-size: clamp(#{calc($minValue / 16) + rem}, #{$fluidValue + vw} + #{$remValue + rem}, #{calc($maxValue / 16) + rem})
+}
+
+// Project mixins
