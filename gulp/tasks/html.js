@@ -3,6 +3,7 @@ import paths from "../config/paths.js"
 import plugins from "../config/plugins.js"
 
 import fileinclude from "gulp-file-include"
+import webpHTML from "gulp-webp-retina-html"
 import versionNumber from "gulp-version-number"
 
 const html = () => {
@@ -15,6 +16,13 @@ const html = () => {
 		))
 		.pipe(fileinclude())
 		.pipe(plugins.replace(/@img\//g, 'img/'))
+		.pipe(webpHTML({
+			extensions: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
+			retina: {
+				1: '',
+				2: '@2x',
+			},
+		}))
 		.pipe(plugins.gulpIf(
 			app.isProduction,
 			versionNumber({

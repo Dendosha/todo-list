@@ -33,7 +33,7 @@ const getSpriteSettings = () => {
 			const spriteMode = arg.slice(2)
 			spriteSettings.mode[spriteMode] = {
 				dest: './icons',
-				sprite: `sprite-${spriteMode}.svg`,
+				sprite: `sprite.${spriteMode}.svg`,
 				example: app.spriteExample,
 			}
 		}
