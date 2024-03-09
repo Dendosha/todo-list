@@ -39,7 +39,7 @@
 html {
 	font-family: var(--ff-main);
 	font-style: normal;
-	font-weight: var(--ff-normal);
+	font-weight: var(--fw-normal);
 
 	color: var(--clr-text-default);
 	background-color: var(--clr-bg);
@@ -70,7 +70,7 @@ body {
 	}
 }
 
-// Header and Footer
+// Blocks
 @import "./blocks/*.scss";
 
 // Pages

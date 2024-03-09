@@ -1,20 +1,18 @@
 @use "sass:math";
 
-// Containers
-
-// Regular
+// Regular container
 .--container {
 	max-width: rem($containerWidth + $containerPadding * 2);
 	margin: 0 auto;
 	padding-inline: rem($containerPadding);
 }
 
-// Grid
-// .--grid-content {
-// 	display: grid;
-// 	grid-template-columns:
-// 		[full-width-start] 1fr [breakout-start] rem($containerPadding) [content-start] minmax(auto, rem($containerWidth)) [content-end] rem($containerPadding) [breakout-end] 1fr [full-width-end];
-// }
+// Grid content
+.--grid-content {
+	display: grid;
+	grid-template-columns:
+		[full-width-start] 1fr [breakout-start] rem($containerPadding) [content-start] minmax(auto, rem($containerWidth)) [content-end] rem($containerPadding) [breakout-end] 1fr [full-width-end];
+}
 
 .--visually-hidden {
 	position: absolute;
