@@ -1,0 +1,53 @@
+.swiper-3d {
+	perspective: rem(900);
+}
+
+.swiper-horizontal {
+	touch-action: pan-y;
+}
+
+.swiper {
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	overflow: hidden;
+	list-style: none;
+	padding: 0;
+	z-index: 1;
+}
+
+.swiper-wrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	display: flex;
+	transition-property: transform;
+	transition-timing-function: var(--swiper-wrapper-transition-timing-function, initial);
+}
+
+.swiper-3d .swiper-wrapper {
+	transform-style: preserve-3d;
+}
+
+.swiper-android .swiper-slide,
+.swiper-ios .swiper-slide,
+.swiper-wrapper {
+	transform: translate3d(0px, 0, 0);
+}
+
+.swiper-3d .swiper-slide,
+.swiper-3d .swiper-cube-shadow {
+	transform-style: preserve-3d;
+}
+
+.swiper-slide {
+	flex-shrink: 0;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	transition-property: transform;
+	display: block;
+
+	transform-origin: center bottom;
+}
