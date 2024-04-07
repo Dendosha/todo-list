@@ -102,6 +102,14 @@
 
 
 
+// ===== Accordion =====
+// import Accordions from "./libs/accordions/accordions.js"
+
+// ===== Usage =====
+// const accordions = new Accordions()
+
+
+
 // Header script
 import "./blocks/header.js"
 
