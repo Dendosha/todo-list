@@ -78,7 +78,7 @@ function createTask(text) {
 		}
 	})
 
-	taskText.addEventListener('input', (e) => updateTaskTextHeight())
+	taskText.addEventListener('input', (e) => updateTaskTextHeight(e.currentTarget))
 
 	tasksMap.set(taskElement, {
 		taskWrapper,
