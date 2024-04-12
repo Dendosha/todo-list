@@ -24,13 +24,13 @@ taskForm.addEventListener('submit', (e) => {
 
 	tasksList.append(task)
 	task.classList.add('--expanded')
-	toggleListVisibility(tasksList)
+	updateTaskTextHeight(tasksMap.get(task).taskText)
 })
 
 function createTask(text) {
 	const taskElement = document.createElement('li')
 	const taskWrapper = document.createElement('div')
-	const taskText = document.createElement('p')
+	const taskText = document.createElement('textarea')
 	const taskEditButton = document.createElement('button')
 	const taskCompleteButton = document.createElement('button')
 	const taskRecoverButton = document.createElement('button')
@@ -39,10 +39,12 @@ function createTask(text) {
 	taskElement.classList.add('tasks-list__item')
 	taskWrapper.classList.add('tasks-list__item-wrapper')
 
-	taskText.classList.add('tasks-list__item-text')
+	taskText.classList.add('tasks-list__item-text', 'interactive-element')
+	taskText.setAttribute('disabled', '')
 	taskText.innerText = text
+	taskText.style.resize = 'none'
 
-	taskEditButton.classList.add('tasks-list__item-button', 'tasks-list__cedit-button', 'interactive-element')
+	taskEditButton.classList.add('tasks-list__item-button', 'tasks-list__edit-button', 'interactive-element')
 	taskCompleteButton.classList.add('tasks-list__item-button', 'tasks-list__complete-button', 'interactive-element')
 	taskRecoverButton.classList.add('tasks-list__item-button', 'tasks-list__recover-button', 'interactive-element')
 	taskDeleteButton.classList.add('tasks-list__item-button', 'tasks-list__delete-button', 'interactive-element')
@@ -68,6 +70,15 @@ function createTask(text) {
 	taskWrapper.append(taskText, taskEditButton, taskRecoverButton, taskCompleteButton, taskDeleteButton)
 
 	taskElement.addEventListener('click', taskClickHandler)
+	taskText.addEventListener('keydown', (e) => {
+		if (!e.shiftKey && e.key === 'Enter') {
+			toggleEditState(taskEditButton.querySelector('img'), taskText)
+		} else if (e.shiftKey && e.key === 'Enter') {
+			updateTaskTextHeight(e.currentTarget)
+		}
+	})
+
+	taskText.addEventListener('input', (e) => updateTaskTextHeight())
 
 	tasksMap.set(taskElement, {
 		taskWrapper,
@@ -79,6 +90,14 @@ function createTask(text) {
 	})
 
 	return taskElement
+}
+
+function updateTaskTextHeight(taskText) {
+	taskText.style.height = `40px`
+	if (taskText.scrollHeight > taskText.offsetHeight) {
+		taskText.style.height = 'auto'
+		taskText.style.height = `${taskText.scrollHeight}px`
+	}
 }
 
 function taskClickHandler(e) {
@@ -105,19 +124,8 @@ function taskClickHandler(e) {
 	}
 }
 
-function toggleListVisibility(list) {
-	if (list.querySelectorAll('li') && !list.parentElement.classList.contains('--expanded')) {
-		list.parentElement.classList.add('--expanded')
-		list.parentElement.classList.remove('--wrapped')
-	}
-	else {
-		list.parentElement.classList.add('--wrapped')
-		list.parentElement.classList.remove('--expanded')
-	}
-}
-
 function editTask(task, children) {
-
+	toggleEditState(children)
 }
 
 function completeTask(task, children) {
@@ -162,4 +170,32 @@ function recoverTask(task, children) {
 		children.taskCompleteButton.style.display = 'flex'
 		children.taskRecoverButton.style.display = 'none'
 	}, { once: true, })
+}
+
+function toggleEditState(children) {
+	const innerImg = children.taskEditButton.querySelector('img')
+
+	if (innerImg.alt === 'Редактировать') {
+		innerImg.src = 'img/icons/save.svg'
+		innerImg.alt = 'Сохранить'
+
+		children.taskText.removeAttribute('disabled')
+		children.taskText.style.resize = 'vertical'
+		children.taskText.focus()
+		children.taskText.selectionStart = children.taskText.value.length
+
+		children.taskDeleteButton.setAttribute('disabled', '')
+		children.taskCompleteButton.setAttribute('disabled', '')
+		children.taskRecoverButton.setAttribute('disabled', '')
+	} else {
+		innerImg.src = 'img/icons/edit.svg'
+		innerImg.alt = 'Редактировать'
+
+		children.taskText.setAttribute('disabled', '')
+		children.taskText.style.resize = 'none'
+
+		children.taskDeleteButton.removeAttribute('disabled')
+		children.taskCompleteButton.removeAttribute('disabled')
+		children.taskRecoverButton.removeAttribute('disabled')
+	}
 }

@@ -164,10 +164,20 @@
 	// .tasks-list__item-text
 
 	&__item-text {
+		user-select: none;
+
 		display: flex;
 		align-items: center;
 
 		padding: rem(10);
+
+		min-height: rem(40);
+		max-height: rem(200);
+
+		&:disabled {
+			color: #000;
+			background-color: #fff;
+		}
 	}
 
 	// .tasks-list__item-button
@@ -180,7 +190,13 @@
 		width: rem(40);
 		height: rem(40);
 
-		background-color: transparent;
+		background-color: #fff;
+
+		transition: background-color 0.3s;
+
+		&:disabled {
+			background-color: #d6d6d6;
+		}
 	}
 
 	// .tasks-list__edit-button

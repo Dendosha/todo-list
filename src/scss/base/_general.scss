@@ -42,5 +42,9 @@
 		&:hover {
 			box-shadow: inset 0 0 rem(5) var(--clr-primary);
 		}
+
+		&:disabled:hover {
+			box-shadow: none;
+		}
 	}
 }
