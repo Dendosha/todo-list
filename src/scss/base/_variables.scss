@@ -1,18 +1,16 @@
 :root {
-	// Base colors
-	--clr-bg: #2d2d2d;
-
-	// Text colors
-	--clr-text-default: rgb(255, 255, 255);
-	// --clr-text-default-050: rgb(255, 255, 255, 0.5);
-
 	// Primary colors
-	// --clr-primary: rgb(0, 0, 0);
-	// --clr-primary-050: rgb(0, 0, 0, 0.5);
+	--clr-primary: rgb(45, 45, 45);
 
 	// Secondary colors
-	// --clr-secondary: rgb(0, 0, 0);
-	// --clr-secondary-050: rgb(0, 0, 0, 0.5);
+	--clr-secondary: rgb(255, 255, 255);
+
+	// Background color
+	--clr-bg: var(--clr-primary);
+
+	// Text colors
+	--clr-text-default: var(--clr-secondary);
+	--clr-text-dark: var(--clr-primary);
 
 	// Fonts
 	--ff-primary: 'Arial', Helvetica, sans-serif;
@@ -22,5 +20,5 @@
 }
 
 // Sizes
-$containerWidth: 1260;
+$containerWidth: 760;
 $containerPadding: 25;

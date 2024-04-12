@@ -30,3 +30,17 @@
 .--burger {
 	display: none;
 }
+
+.interactive-element {
+	transition: box-shadow 0.3s;
+
+	&:focus-visible {
+		box-shadow: inset 0 0 rem(5) var(--clr-primary);
+	}
+
+	@media (hover: hover) {
+		&:hover {
+			box-shadow: inset 0 0 rem(5) var(--clr-primary);
+		}
+	}
+}

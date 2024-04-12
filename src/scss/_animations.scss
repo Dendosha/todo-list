@@ -1,0 +1,31 @@
+@keyframes taskExpand {
+	0% {
+		grid-template-rows: 0fr;
+		border-style: none;
+
+		margin-top: rem(0);
+	}
+
+	100% {
+		grid-template-rows: 1fr;
+		border-style: solid;
+
+		margin-top: rem(10);
+	}
+}
+
+@keyframes taskWrap {
+	0% {
+		grid-template-rows: 1fr;
+		border-style: solid;
+
+		margin-top: rem(10);
+	}
+
+	100% {
+		grid-template-rows: 0fr;
+		border-style: none;
+
+		margin-top: rem(0);
+	}
+}
