@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<title>Template</title>
+	<title>Приложение «Задачи»</title>
 
 	<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 	<link rel="icon" type="image/png" href="img/favicon.png">
@@ -13,10 +13,10 @@
 	<meta name="format-detection" content="telephone=no">
 	<meta name="format-detection" content="address=no">
 
-	<link rel="stylesheet" href="css/main.min.css?_v=20240306234205">
-	<script defer src="js/main.min.js?_v=20240306234205"></script>
+	<link rel="stylesheet" href="css/main.min.css?_v=20240412230738">
+	<script defer src="js/main.min.js?_v=20240412230738"></script>
 	
-	<script defer src="js/index.min.js?_v=20240306234205"></script>
+	<script defer src="js/index.min.js?_v=20240412230738"></script>
 	
 </head>
 
@@ -26,7 +26,29 @@
 
 </header>
 		<main class="page">
-			<h1 style="margin-top: 5rem; text-align: center; font-size: 5rem;">Template page</h1>
+			<h1 class="page__title --visually-hidden">Приложение «Задачи»</h1>
+			<section class="page__todo todo">
+				<div class="todo__container --container">
+					<h2 class="todo__title">Список задач</h2>
+					<form action="#" method="post" id="task-form" autocomplete="off" class="todo__task-add-form task-add-form">
+						<div class="task-add-form__wrapper">
+							<label for="task-input" class="task-add-form__label">Добавить задачу</label>
+							<input type="text" name="task" id="task-input" required class="task-add-form__input interactive-element">
+							<button type="submit" class="task-add-form__submit-button interactive-element">
+								<img src="img/icons/add.svg" alt="Добавить задачу" class="task-add-form__submit-button-img">
+							</button>
+						</div>
+					</form>
+
+					<ul id="tasks-list" aria-label="Задачи" class="todo__tasks-list tasks-list"></ul>
+
+					<ul id="completed-tasks-list" aria-label="Выполненные задачи"
+						class="todo__tasks-list tasks-list tasks-list_completed"></ul>
+
+					<ul id="deleted-tasks-list" aria-label="Удалённые задачи"
+						class="todo__tasks-list tasks-list tasks-list_deleted"></ul>
+				</div>
+			</section>
 		</main>
 		<footer class="footer">
 
