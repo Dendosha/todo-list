@@ -69,17 +69,6 @@ function createTask(text) {
 	taskElement.append(taskWrapper)
 	taskWrapper.append(taskText, taskEditButton, taskRecoverButton, taskCompleteButton, taskDeleteButton)
 
-	taskElement.addEventListener('click', taskClickHandler)
-	taskText.addEventListener('keydown', (e) => {
-		if (!e.shiftKey && e.key === 'Enter') {
-			toggleEditState(taskEditButton.querySelector('img'), taskText)
-		} else if (e.shiftKey && e.key === 'Enter') {
-			updateTaskTextHeight(e.currentTarget)
-		}
-	})
-
-	taskText.addEventListener('input', (e) => updateTaskTextHeight(e.currentTarget))
-
 	tasksMap.set(taskElement, {
 		taskWrapper,
 		taskText,
@@ -88,6 +77,18 @@ function createTask(text) {
 		taskCompleteButton,
 		taskDeleteButton
 	})
+
+	taskElement.addEventListener('click', taskClickHandler)
+
+	taskText.addEventListener('keydown', (e) => {
+		if (!e.shiftKey && e.key === 'Enter') {
+			toggleEditState(tasksMap.get(taskElement))
+		} else if (e.shiftKey && e.key === 'Enter') {
+			updateTaskTextHeight(e.currentTarget)
+		}
+	})
+
+	taskText.addEventListener('input', (e) => updateTaskTextHeight(e.currentTarget))
 
 	return taskElement
 }
