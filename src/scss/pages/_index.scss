@@ -159,6 +159,8 @@
 		grid-auto-columns: auto;
 
 		overflow: hidden;
+
+		border-radius: rem(5);
 	}
 
 	// .tasks-list__item-text
@@ -170,6 +172,8 @@
 		align-items: center;
 
 		padding: rem(10);
+
+		width: 100%;
 
 		min-height: rem(40);
 		max-height: rem(200);
