@@ -325,6 +325,7 @@ body.--burger-menu-opened {
   grid-auto-flow: column;
   grid-auto-columns: auto;
   overflow: hidden;
+  border-radius: 0.3125rem;
 }
 
 .tasks-list__item-text {
@@ -334,6 +335,7 @@ body.--burger-menu-opened {
   display: flex;
   align-items: center;
   padding: 0.625rem;
+  width: 100%;
   min-height: 2.5rem;
   max-height: 12.5rem;
 }
