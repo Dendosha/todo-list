@@ -144,19 +144,25 @@ function completeTask(task, children) {
 }
 
 function deleteTask(task, children) {
-	if (task.closest('ul').id === 'deleted-tasks-list') return
+	if (task.closest('ul').id === 'deleted-tasks-list') {
+		task.classList.add('--wrapped')
 
-	task.classList.add('--wrapped')
+		task.addEventListener('animationend', (e) => {
+			task.remove()
+		}, { once: true, })
+	} else {
+		task.classList.add('--wrapped')
 
-	task.addEventListener('animationend', (e) => {
-		deletedTasksList.append(task)
-		task.classList.remove('--wrapped')
-		task.classList.add('--expanded')
+		task.addEventListener('animationend', (e) => {
+			deletedTasksList.append(task)
+			task.classList.remove('--wrapped')
+			task.classList.add('--expanded')
 
-		children.taskEditButton.style.display = 'none'
-		children.taskCompleteButton.style.display = 'none'
-		children.taskRecoverButton.style.display = 'flex'
-	}, { once: true, })
+			children.taskEditButton.style.display = 'none'
+			children.taskCompleteButton.style.display = 'none'
+			children.taskRecoverButton.style.display = 'flex'
+		}, { once: true, })
+	}
 }
 
 function recoverTask(task, children) {
