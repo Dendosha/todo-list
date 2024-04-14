@@ -201,6 +201,18 @@
 		&:disabled {
 			background-color: #d6d6d6;
 		}
+
+		@media screen and (max-width: em(768)) {
+			margin-top: rem(5);
+			width: rem(30);
+			height: rem(30);
+		}
+
+		@media screen and (max-width: em(480)) {
+			margin-top: rem(7);
+			width: rem(24);
+			height: rem(24);
+		}
 	}
 
 	// .tasks-list__edit-button
