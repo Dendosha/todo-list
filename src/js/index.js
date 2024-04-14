@@ -1,12 +1,3 @@
-// window.addEventListener('visibilitychange', sendData)
-// window.addEventListener('pagehide', sendData)
-
-// function sendData() {
-// 	if (document?.visibilityState === 'hidden') {
-// 		console.log(1)
-// 	}
-// }
-
 const tasksMap = new Map()
 const taskForm = document.getElementById('task-form')
 const taskInput = document.getElementById('task-input')
@@ -62,7 +53,7 @@ function createTask(text) {
 	taskEditButton.innerHTML = '<img src="img/icons/edit.svg" alt="Редактировать" class="tasks-list__item-button-img">'
 	taskCompleteButton.innerHTML = '<img src="img/icons/complete.svg" alt="Выполнить" class="tasks-list__item-button-img">'
 	taskRecoverButton.innerHTML = '<img src="img/icons/recover.svg" alt="Вернуть в список задач" class="tasks-list__item-button-img">'
-	taskDeleteButton.innerHTML = '<img src="img/icons/delete.svg" alt="Удалить" class="tasks-list__item-button-img">'
+	taskDeleteButton.innerHTML = '<img src="img/icons/cross.svg" alt="Удалить" class="tasks-list__item-button-img">'
 
 	taskRecoverButton.style.display = 'none'
 
@@ -206,3 +197,5 @@ function toggleEditState(children) {
 		children.taskRecoverButton.removeAttribute('disabled')
 	}
 }
+
+import "./blocks/info-dialog.js"

@@ -1,3 +1,27 @@
 <header class="header">
-
+	<div class="header__container --container">
+		<div class="header__app-info app-info">
+			<p class="app-info__text">
+				По умолчанию для хранения данных используется indexedDB
+			</p>
+			<button id="info-dialog-open" type="button" class="app-info__open-dialog interactive-element">
+				<img src="@img/icons/info.svg" alt="Информация" class="app-info__open-dialog-icon">
+			</button>
+		</div>
+		<div class="header__user user">
+			<p class="user__name">Username</p>
+			<button type="button" class="user__button user__register-or-login interactive-element ">
+				Регистрация / Вход
+			</button>
+			<button type="button" class="user__button user__logout interactive-element ">
+				Выход
+			</button>
+			<button type="button" class="user__button user__clear-db interactive-element ">
+				Очистить локальные данные
+			</button>
+			<button type="button" class="user__button user__clear-db user__clear-db_server interactive-element ">
+				Очистить серверные данные
+			</button>
+		</div>
+	</div>
 </header>

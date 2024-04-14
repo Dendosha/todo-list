@@ -36,6 +36,22 @@
 		</main>
 		@@include('./blocks/footer.html', {})
 	</div>
+	<dialog id="info-dialog" class="page-dialog__dialog">
+		<p class="page-dialog__dialog-title">Дополнительная информация</p>
+		<button id="info-dialog-close" type="button" class="page-dialog__close-dialog interactive-element">
+			<img src="@img/icons/delete.svg" alt="Закрыть" class="page-dialog__close-dialog-icon">
+		</button>
+		<p class="page-dialog__text">
+			По умолчанию для хранения списка задач используется
+			<a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" target="_blank"
+				class="page-dialog__link">indexedDB API</a>.
+		</p>
+		<p class="page-dialog__text">
+			При таком способе хранения данных есть вероятность их потери.
+			Чтобы избежать подобного, вы можете зарегистрироваться, войти в учётную запись и хранить данные в базе данных
+			на сервере.
+		</p>
+	</dialog>
 </body>
 
 </html>

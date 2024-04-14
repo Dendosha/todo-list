@@ -29,3 +29,23 @@
 		margin-top: rem(0);
 	}
 }
+
+@keyframes dialogAnimation {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes backdropAnimation {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 0.2;
+	}
+}
