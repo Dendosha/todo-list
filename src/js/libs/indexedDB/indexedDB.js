@@ -35,6 +35,37 @@ export function createObjectStore(storeName, storeIndexes = [], keyPath = 'id', 
 	})
 }
 
+export function clearObjectStore(storeName, db) {
+	return new Promise((resolve, reject) => {
+		const response = {
+			queryType: 'clear',
+			result: null,
+			error: null,
+			ok: false,
+		}
+
+		const transaction = db.transaction(storeName, 'readwrite')
+		const store = transaction.objectStore(storeName)
+		const clearRequest = store.clear()
+
+		clearRequest.onerror = function (e) {
+			response.error = e
+			reject(response)
+		}
+
+		clearRequest.onsuccess = function (e) {
+			response.result = { clearedStore: storeName }
+			response.ok = true
+
+			resolve(response)
+		}
+
+		transaction.oncomplete = function (e) {
+			db.close()
+		}
+	})
+}
+
 export function getEntryByKey(keyValue, storeName, db) {
 	return new Promise((resolve, reject) => {
 		const response = {
@@ -80,21 +111,21 @@ export function getEntryByIndex(indexName, indexValue, all, storeName, db) {
 
 		const store = transaction.objectStore(storeName)
 		const searchIndex = store.index(indexName)
-		let searchQuery
+		let searchRequest
 
 		if (all) {
-			searchQuery = searchIndex.getAll(indexValue)
+			searchRequest = searchIndex.getAll(indexValue)
 		} else {
-			searchQuery = searchIndex.get(indexValue)
+			searchRequest = searchIndex.get(indexValue)
 		}
 
-		searchQuery.onerror = function (e) {
+		searchRequest.onerror = function (e) {
 			response.error = e
 			reject(response)
 		}
 
-		searchQuery.onsuccess = function (e) {
-			response.result = searchQuery.result
+		searchRequest.onsuccess = function (e) {
+			response.result = searchRequest.result
 			response.ok = true
 
 			resolve(response)
@@ -142,25 +173,31 @@ export function putEntries(storeEntries = [], storeName, db) {
 	return new Promise((resolve, reject) => {
 		const response = {
 			queryType: 'put',
-			result: null,
+			result: [],
 			error: null,
 			ok: false,
 		}
 
 		const transaction = db.transaction(storeName, 'readwrite')
-
 		const store = transaction.objectStore(storeName)
+
 		storeEntries.forEach(storeEntry => {
-			store.put(storeEntry)
+			const putRequest = store.put(storeEntry)
+
+			putRequest.onsuccess = function (e) {
+				storeEntry.key = putRequest.result
+				response.result.push(storeEntry)
+			}
 		})
 
 		transaction.onerror = function (e) {
+			response.result = null
 			response.error = e
+
 			reject(response)
 		}
 
 		transaction.oncomplete = function (e) {
-			response.result = storeEntries
 			response.ok = true
 
 			db.close()
