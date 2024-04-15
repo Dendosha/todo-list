@@ -163,6 +163,87 @@ h6 {
   box-shadow: inset 0 0 0.3125rem var(--clr-primary);
 }
 
+.page-dialog__dialog {
+  position: relative;
+  max-width: 37.5rem;
+  max-height: 25rem;
+  margin: auto;
+  padding: 1.875rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 0 0.625rem rgb(65, 65, 65);
+  transition: opacity 0.3s;
+}
+
+.page-dialog__dialog::backdrop {
+  background-color: rgb(0, 0, 0);
+  transition: opacity 0.4s;
+}
+
+.page-dialog__dialog[open] {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.page-dialog__dialog[open]::backdrop {
+  opacity: 0.2;
+}
+
+.page-dialog__dialog.--opening {
+  animation: dialogAnimation 0.4s forwards;
+}
+
+.page-dialog__dialog.--opening::backdrop {
+  animation: backdropAnimation 0.4s forwards;
+}
+
+.page-dialog__dialog.--closing {
+  animation: dialogAnimation 0.4s forwards;
+  animation-direction: reverse;
+}
+
+.page-dialog__dialog.--closing::backdrop {
+  animation: backdropAnimation 0.4s forwards;
+  animation-direction: reverse;
+}
+
+.page-dialog__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.page-dialog__title:not(:last-child) {
+  margin-bottom: 0.625rem;
+}
+
+.page-dialog__close-dialog {
+  position: absolute;
+  top: 0.9375rem;
+  right: 0.9375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 0.625rem;
+  background-color: transparent;
+}
+
+.page-dialog__close-dialog-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.page-dialog__link {
+  color: #2d42fd;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.2s;
+}
+
+.page-dialog__link:focus-visible {
+  text-decoration-color: currentColor;
+}
+
 @keyframes taskExpand {
   0% {
     grid-template-rows: 0fr;
@@ -188,6 +269,26 @@ h6 {
     grid-template-rows: 0fr;
     border-style: none;
     margin-top: 0rem;
+  }
+}
+
+@keyframes dialogAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes backdropAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.2;
   }
 }
 
@@ -223,8 +324,70 @@ body.--burger-menu-opened {
   flex: 1 1 auto;
 }
 
-.page {
-  padding-top: 1.875rem;
+.header {
+  margin-block: 1.875rem;
+}
+
+.header__container {
+  display: grid;
+  align-items: start;
+  grid-template-columns: 1fr auto;
+  gap: 1.875rem;
+  padding: 1.875rem;
+  border-radius: 1.25rem;
+  background-color: var(--clr-secondary);
+  color: var(--clr-text-dark);
+}
+
+.app-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.app-info__text {
+  text-wrap: balance;
+  flex: 0 1 15.625rem;
+}
+
+.app-info__open-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background-color: transparent;
+}
+
+.app-info__open-dialog-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.user {
+  display: grid;
+  gap: 0.3125rem;
+}
+
+.user__name {
+  display: none;
+  justify-self: end;
+}
+
+.user__button {
+  padding: 0.3125rem 0.625rem;
+  border: 0.125rem solid var(--clr-primary);
+  border-radius: 0.3125rem;
+  background-color: transparent;
+}
+
+.user__logout {
+  display: none;
+}
+
+.user__clear-db_server {
+  display: none;
 }
 
 .todo {
@@ -364,6 +527,32 @@ body.--burger-menu-opened {
   height: 100%;
 }
 
+@media screen and (max-width: 48em) {
+  .tasks-list__item-button {
+    margin-top: 0.3125rem;
+    width: 1.875rem;
+    height: 1.875rem;
+  }
+}
+
+@media screen and (max-width: 38.75em) {
+  .header__container {
+    grid-template-columns: revert;
+  }
+
+  .app-info__text {
+    flex-grow: 1;
+  }
+}
+
+@media screen and (max-width: 30em) {
+  .tasks-list__item-button {
+    margin-top: 0.4375rem;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
 @media (hover: hover) {
   .interactive-element:hover {
     box-shadow: inset 0 0 0.3125rem var(--clr-primary);
@@ -371,5 +560,9 @@ body.--burger-menu-opened {
 
   .interactive-element:disabled:hover {
     box-shadow: none;
+  }
+
+  .page-dialog__link:hover {
+    text-decoration-color: currentColor;
   }
 }
