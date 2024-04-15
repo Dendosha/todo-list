@@ -104,7 +104,7 @@ function taskClickHandler(e) {
 
 	switch (button.getAttribute('data-type')) {
 		case 'edit':
-			editTask(taskElement, children)
+			editTask(children)
 			break
 		case 'complete':
 			completeTask(taskElement, children)
@@ -181,18 +181,22 @@ function toggleEditState(children) {
 
 		children.taskText.removeAttribute('disabled')
 		children.taskText.style.resize = 'vertical'
+
 		children.taskText.focus()
+
 		children.taskText.selectionStart = children.taskText.value.length
 
 		children.taskDeleteButton.setAttribute('disabled', '')
 		children.taskCompleteButton.setAttribute('disabled', '')
 		children.taskRecoverButton.setAttribute('disabled', '')
-	} else {
+	} else if (innerImg.alt === 'Сохранить') {
 		innerImg.src = 'img/icons/edit.svg'
 		innerImg.alt = 'Редактировать'
 
 		children.taskText.setAttribute('disabled', '')
 		children.taskText.style.resize = 'none'
+
+		setTimeout(() => children.taskEditButton.focus(), 1)
 
 		children.taskDeleteButton.removeAttribute('disabled')
 		children.taskCompleteButton.removeAttribute('disabled')
