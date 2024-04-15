@@ -1,3 +1,5 @@
+import { dbGetTaskByKey, dbGetTaskByIndex, dbGetAllTasks, dbPutTasks, dbUpdateTask, dbDeleteTask, dbClearTasks } from "./blocks/todoIndexedDB.js"
+
 const tasksMap = new Map()
 const taskForm = document.getElementById('task-form')
 const taskInput = document.getElementById('task-input')
@@ -116,7 +118,7 @@ function taskClickHandler(e) {
 	}
 }
 
-function editTask(task, children) {
+function editTask(children) {
 	toggleEditState(children)
 }
 
