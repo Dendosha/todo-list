@@ -8,19 +8,51 @@ const tasksList = document.getElementById('tasks-list')
 const completedTasksList = document.getElementById('completed-tasks-list')
 const deletedTasksList = document.getElementById('deleted-tasks-list')
 
-taskForm.addEventListener('submit', (e) => {
+const dbLocalClearButton = document.querySelector('.user__clear-all-tasks')
+
+dbLocalClearButton.addEventListener('click', async function (e) {
+	await dbClearTasks()
+
+	for (const [task, taskInfo] of tasksMap.entries()) {
+		deleteTask(task, taskInfo, true)
+		tasksMap.delete(task)
+	}
+})
+
+taskForm.addEventListener('submit', async function (e) {
 	e.preventDefault()
 
-	const task = createTask(taskInput.value)
+	const task = await createTask(taskInput.value)
 
 	taskForm.reset()
 
-	tasksList.append(task)
-	task.classList.add('--expanded')
-	updateTaskTextHeight(tasksMap.get(task).taskText)
+	// tasksList.append(task)
+	// task.classList.add('--expanded')
+	// updateTaskTextHeight(tasksMap.get(task).taskText)
 })
 
-function createTask(text) {
+document.addEventListener('DOMContentLoaded', async function (e) {
+	const response = await dbGetAllTasks()
+	response.result.forEach(task => {
+		if (task.deleted) {
+			renderTask(task.taskText, task.id, deletedTasksList)
+		} else if (task.completed) {
+			renderTask(task.taskText, task.id, completedTasksList)
+		} else {
+			renderTask(task.taskText, task.id)
+		}
+	})
+})
+
+async function createTask(text) {
+	const response = await dbPutTasks([
+		{ taskText: text, completed: false, deleted: false },
+	])
+
+	return renderTask(text, response.result[0].key)
+}
+
+function renderTask(text, id = null, list = tasksList) {
 	const taskElement = document.createElement('li')
 	const taskWrapper = document.createElement('div')
 	const taskText = document.createElement('textarea')
@@ -62,7 +94,12 @@ function createTask(text) {
 	taskElement.append(taskWrapper)
 	taskWrapper.append(taskText, taskEditButton, taskRecoverButton, taskCompleteButton, taskDeleteButton)
 
+	list.append(taskElement)
+	taskElement.classList.add('--expanded')
+	updateTaskTextHeight(taskText)
+
 	tasksMap.set(taskElement, {
+		id,
 		taskWrapper,
 		taskText,
 		taskEditButton,
@@ -86,6 +123,132 @@ function createTask(text) {
 	return taskElement
 }
 
+async function editTask(taskInfo) {
+	await dbUpdateTask(taskInfo.id, 'taskText', taskInfo.taskText.value)
+}
+
+async function completeTask(task, taskInfo) {
+	await dbUpdateTask(taskInfo.id, 'completed', true)
+
+	task.classList.add('--wrapped')
+
+	task.addEventListener('animationend', (e) => {
+		completedTasksList.append(task)
+		task.classList.remove('--wrapped')
+		task.classList.add('--expanded')
+
+		taskInfo.taskEditButton.style.display = 'none'
+		taskInfo.taskCompleteButton.style.display = 'none'
+		taskInfo.taskRecoverButton.style.display = 'flex'
+	}, { once: true, })
+}
+
+async function deleteTask(task, taskInfo, isFinalDeletion = false) {
+	if (task.closest('ul').id === 'deleted-tasks-list') {
+		isFinalDeletion = true
+	}
+
+	if (isFinalDeletion) {
+		await dbDeleteTask(taskInfo.id)
+
+		task.classList.add('--wrapped')
+
+		task.addEventListener('animationend', (e) => {
+			task.remove()
+		}, { once: true, })
+	} else {
+		await dbUpdateTask(taskInfo.id, 'deleted', true)
+
+		task.classList.add('--wrapped')
+
+		task.addEventListener('animationend', (e) => {
+			deletedTasksList.append(task)
+			task.classList.remove('--wrapped')
+			task.classList.add('--expanded')
+
+			taskInfo.taskEditButton.style.display = 'none'
+			taskInfo.taskCompleteButton.style.display = 'none'
+			taskInfo.taskRecoverButton.style.display = 'flex'
+		}, { once: true, })
+	}
+}
+
+async function recoverTask(task, taskInfo) {
+	const response = await dbGetTaskByKey(taskInfo.id)
+
+	task.classList.add('--wrapped')
+
+	task.addEventListener('animationend', function (e) {
+		if (response?.result?.deleted && response?.result?.completed) {
+			moveTaskToList(task, taskInfo, completedTasksList, {
+				editButton: 'none',
+				completeButton: 'none',
+				recoverButton: 'flex',
+				deleteButton: 'flex',
+			})
+		} else {
+			moveTaskToList(task, taskInfo, tasksList, {
+				editButton: 'flex',
+				completeButton: 'flex',
+				recoverButton: 'none',
+				deleteButton: 'flex',
+			})
+		}
+	}, { once: true, })
+}
+
+async function moveTaskToList(task, taskInfo, list, options) {
+	if (list === tasksList) {
+		await dbUpdateTask(taskInfo.id, 'completed', false)
+	}
+
+	await dbUpdateTask(taskInfo.id, 'deleted', false)
+
+	list.append(task)
+
+	task.classList.remove('--wrapped')
+	task.classList.add('--expanded')
+
+	taskInfo.taskEditButton.style.display = options.editButton
+	taskInfo.taskCompleteButton.style.display = options.completeButton
+	taskInfo.taskRecoverButton.style.display = options.recoverButton
+	taskInfo.taskDeleteButton.style.display = options.deleteButton
+}
+
+async function toggleEditState(taskInfo) {
+	const innerImg = taskInfo.taskEditButton.querySelector('img')
+
+	if (innerImg.alt === 'Редактировать') {
+		innerImg.src = 'img/icons/save.svg'
+		innerImg.alt = 'Сохранить'
+
+		taskInfo.taskText.removeAttribute('disabled')
+		taskInfo.taskText.style.resize = 'vertical'
+
+		taskInfo.taskText.focus()
+
+		taskInfo.taskText.selectionStart = taskInfo.taskText.value.length
+
+		taskInfo.taskDeleteButton.setAttribute('disabled', '')
+		taskInfo.taskCompleteButton.setAttribute('disabled', '')
+		taskInfo.taskRecoverButton.setAttribute('disabled', '')
+	} else if (innerImg.alt === 'Сохранить') {
+		innerImg.src = 'img/icons/edit.svg'
+		innerImg.alt = 'Редактировать'
+
+		taskInfo.taskText.setAttribute('disabled', '')
+		taskInfo.taskText.style.resize = 'none'
+
+		setTimeout(() => taskInfo.taskEditButton.focus(), 1)
+
+		taskInfo.taskDeleteButton.removeAttribute('disabled')
+		taskInfo.taskCompleteButton.removeAttribute('disabled')
+		taskInfo.taskRecoverButton.removeAttribute('disabled')
+
+		editTask(taskInfo)
+	}
+}
+
 function updateTaskTextHeight(taskText) {
 	taskText.style.height = `40px`
 	if (taskText.scrollHeight > taskText.offsetHeight) {
@@ -100,107 +263,21 @@ function taskClickHandler(e) {
 
 	if (!taskElement || !button) return
 
-	const children = tasksMap.get(taskElement)
+	const taskInfo = tasksMap.get(taskElement)
 
 	switch (button.getAttribute('data-type')) {
 		case 'edit':
-			editTask(children)
+			toggleEditState(taskInfo)
 			break
 		case 'complete':
-			completeTask(taskElement, children)
+			completeTask(taskElement, taskInfo)
 			break
 		case 'recover':
-			recoverTask(taskElement, children)
+			recoverTask(taskElement, taskInfo)
 			break
 		case 'delete':
-			deleteTask(taskElement, children)
+			deleteTask(taskElement, taskInfo)
 			break
-	}
-}
-
-function editTask(children) {
-	toggleEditState(children)
-}
-
-function completeTask(task, children) {
-	task.classList.add('--wrapped')
-
-	task.addEventListener('animationend', (e) => {
-		completedTasksList.append(task)
-		task.classList.remove('--wrapped')
-		task.classList.add('--expanded')
-
-		children.taskEditButton.style.display = 'none'
-		children.taskCompleteButton.style.display = 'none'
-		children.taskRecoverButton.style.display = 'flex'
-	}, { once: true, })
-}
-
-function deleteTask(task, children) {
-	if (task.closest('ul').id === 'deleted-tasks-list') {
-		task.classList.add('--wrapped')
-
-		task.addEventListener('animationend', (e) => {
-			task.remove()
-		}, { once: true, })
-	} else {
-		task.classList.add('--wrapped')
-
-		task.addEventListener('animationend', (e) => {
-			deletedTasksList.append(task)
-			task.classList.remove('--wrapped')
-			task.classList.add('--expanded')
-
-			children.taskEditButton.style.display = 'none'
-			children.taskCompleteButton.style.display = 'none'
-			children.taskRecoverButton.style.display = 'flex'
-		}, { once: true, })
-	}
-}
-
-function recoverTask(task, children) {
-	task.classList.add('--wrapped')
-
-	task.addEventListener('animationend', (e) => {
-		tasksList.append(task)
-		task.classList.remove('--wrapped')
-		task.classList.add('--expanded')
-
-		children.taskEditButton.style.display = 'flex'
-		children.taskCompleteButton.style.display = 'flex'
-		children.taskRecoverButton.style.display = 'none'
-	}, { once: true, })
-}
-
-function toggleEditState(children) {
-	const innerImg = children.taskEditButton.querySelector('img')
-
-	if (innerImg.alt === 'Редактировать') {
-		innerImg.src = 'img/icons/save.svg'
-		innerImg.alt = 'Сохранить'
-
-		children.taskText.removeAttribute('disabled')
-		children.taskText.style.resize = 'vertical'
-
-		children.taskText.focus()
-
-		children.taskText.selectionStart = children.taskText.value.length
-
-		children.taskDeleteButton.setAttribute('disabled', '')
-		children.taskCompleteButton.setAttribute('disabled', '')
-		children.taskRecoverButton.setAttribute('disabled', '')
-	} else if (innerImg.alt === 'Сохранить') {
-		innerImg.src = 'img/icons/edit.svg'
-		innerImg.alt = 'Редактировать'
-
-		children.taskText.setAttribute('disabled', '')
-		children.taskText.style.resize = 'none'
-
-		setTimeout(() => children.taskEditButton.focus(), 1)
-
-		children.taskDeleteButton.removeAttribute('disabled')
-		children.taskCompleteButton.removeAttribute('disabled')
-		children.taskRecoverButton.removeAttribute('disabled')
 	}
 }
 
