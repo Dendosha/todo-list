@@ -82,12 +82,20 @@
 	// .user__button
 
 	&__button {
+		--button-color: var(--clr-primary);
+
 		padding: rem(5) rem(10);
 
-		border: rem(2) solid var(--clr-primary);
+		border: rem(2) solid var(--button-color);
 		border-radius: rem(5);
 
+		color: var(--button-color);
+
 		background-color: transparent;
+
+		&:disabled {
+			--button-color: rgb(167, 167, 167);
+		}
 	}
 
 	// .user__register-or-login
@@ -100,14 +108,7 @@
 		display: none;
 	}
 
-	// .user__clear-db
+	// .user__clear-all-tasks
 
-	&__clear-db {
-
-		// .user__clear-db_server
-
-		&_server {
-			display: none;
-		}
-	}
+	&__clear-all-tasks {}
 }
