@@ -376,17 +376,19 @@ body.--burger-menu-opened {
 }
 
 .user__button {
+  --button-color: var(--clr-primary);
   padding: 0.3125rem 0.625rem;
-  border: 0.125rem solid var(--clr-primary);
+  border: 0.125rem solid var(--button-color);
   border-radius: 0.3125rem;
+  color: var(--button-color);
   background-color: transparent;
 }
 
-.user__logout {
-  display: none;
+.user__button:disabled {
+  --button-color: rgb(167, 167, 167);
 }
 
-.user__clear-db_server {
+.user__logout {
   display: none;
 }
 
