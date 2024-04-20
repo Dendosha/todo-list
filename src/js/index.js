@@ -74,7 +74,15 @@ function renderTask(text, id = null, list = tasksList) {
 	taskRecoverButton.innerHTML = '<img src="img/icons/recover.svg" alt="Вернуть в список задач" class="tasks-list__item-button-img">'
 	taskDeleteButton.innerHTML = '<img src="img/icons/cross.svg" alt="Удалить" class="tasks-list__item-button-img">'
 
-	taskRecoverButton.style.display = 'none'
+	if (list === tasksList) {
+		taskRecoverButton.style.display = 'none'
+	} else if (list === completedTasksList) {
+		taskEditButton.style.display = 'none'
+		taskCompleteButton.style.display = 'none'
+	} else if (list === deletedTasksList) {
+		taskEditButton.style.display = 'none'
+		taskCompleteButton.style.display = 'none'
+	}
 
 	taskElement.append(taskWrapper)
 	taskWrapper.append(taskText, taskEditButton, taskRecoverButton, taskCompleteButton, taskDeleteButton)
