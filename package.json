@@ -7,7 +7,7 @@
 	"scripts": {
 		"dev": "gulp",
 		"prod": "gulp prod --prod",
-		"ghPages": "gulp prod --prod && git add . && git commit -m \"Update gh-pages\" && git push -u",
+		"ghPages": "gulp prod --prod && git add . && git commit -m \"Update gh-pages\" && git push",
 		"deployZIP": "gulp deployZIP --prod",
 		"deployFTP": "gulp deployFTP --prod",
 		"fonts": "gulp fonts",
