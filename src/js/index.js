@@ -8,27 +8,12 @@ const tasksList = document.getElementById('tasks-list')
 const completedTasksList = document.getElementById('completed-tasks-list')
 const deletedTasksList = document.getElementById('deleted-tasks-list')
 
-const dbLocalClearButton = document.querySelector('.user__clear-all-tasks')
-
-dbLocalClearButton.addEventListener('click', async function (e) {
-	await dbClearTasks()
-
-	for (const [task, taskInfo] of tasksMap.entries()) {
-		deleteTask(task, taskInfo, true)
-		tasksMap.delete(task)
-	}
-})
-
 taskForm.addEventListener('submit', async function (e) {
 	e.preventDefault()
 
-	const task = await createTask(taskInput.value)
+	await createTask(taskInput.value)
 
 	taskForm.reset()
-
-	// tasksList.append(task)
-	// task.classList.add('--expanded')
-	// updateTaskTextHeight(tasksMap.get(task).taskText)
 })
 
 document.addEventListener('DOMContentLoaded', async function (e) {
@@ -281,4 +266,4 @@ function taskClickHandler(e) {
 	}
 }
 
-import "./blocks/info-dialog.js"
+import "./blocks/dialog.js"

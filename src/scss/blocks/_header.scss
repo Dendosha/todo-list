@@ -4,10 +4,10 @@
 	// .header__container
 
 	&__container {
-		display: grid;
-		align-items: start;
-		grid-template-columns: 1fr auto;
-		gap: rem(30);
+		// display: grid;
+		// align-items: start;
+		// grid-template-columns: 1fr auto;
+		// gap: rem(30);
 
 		padding: rem(30);
 		border-radius: rem(20);
@@ -15,9 +15,9 @@
 		background-color: var(--clr-secondary);
 		color: var(--clr-text-dark);
 
-		@media screen and (max-width: em(620)) {
-			grid-template-columns: revert;
-		}
+		// @media screen and (max-width: em(620)) {
+		// 	grid-template-columns: revert;
+		// }
 	}
 
 	// .header__app-info
@@ -37,7 +37,7 @@
 	&__text {
 		text-wrap: balance;
 
-		flex: 0 1 rem(250);
+		flex: 1 1 rem(250);
 
 		@media screen and (max-width: em(620)) {
 			flex-grow: 1;
@@ -65,50 +65,4 @@
 		width: 100%;
 		height: 100%;
 	}
-}
-
-.user {
-	display: grid;
-	gap: rem(5);
-
-	// .user__name
-
-	&__name {
-		display: none;
-
-		justify-self: end;
-	}
-
-	// .user__button
-
-	&__button {
-		--button-color: var(--clr-primary);
-
-		padding: rem(5) rem(10);
-
-		border: rem(2) solid var(--button-color);
-		border-radius: rem(5);
-
-		color: var(--button-color);
-
-		background-color: transparent;
-
-		&:disabled {
-			--button-color: rgb(167, 167, 167);
-		}
-	}
-
-	// .user__register-or-login
-
-	&__register-or-login {}
-
-	// .user__logout
-
-	&__logout {
-		display: none;
-	}
-
-	// .user__clear-all-tasks
-
-	&__clear-all-tasks {}
 }

@@ -50,54 +50,51 @@
 }
 
 .page-dialog {
+	--animation-duration: 0.3s;
 
-	// .page-dialog__dialog
+	position: relative;
 
-	&__dialog {
-		position: relative;
+	max-width: rem(600);
+	max-height: rem(400);
+	margin: auto;
 
-		max-width: rem(600);
-		max-height: rem(400);
-		margin: auto;
+	padding: rem(30);
+	border-radius: rem(20);
 
-		padding: rem(30);
-		border-radius: rem(20);
+	box-shadow: 0 0 rem(10) rgb(65, 65, 65);
 
-		box-shadow: 0 0 rem(10) rgb(65, 65, 65);
+	transition: opacity 0.3s;
 
-		transition: opacity 0.3s;
+	&::backdrop {
+		background-color: rgb(0, 0, 0);
+
+		transition: opacity var(--animation-duration);
+	}
+
+	&[open] {
+		display: grid;
+		gap: rem(10);
 
 		&::backdrop {
-			background-color: rgb(0, 0, 0);
-
-			transition: opacity 0.4s;
+			opacity: 0.2;
 		}
+	}
 
-		&[open] {
-			display: grid;
-			gap: rem(10);
+	&.--opening {
+		animation: dialogAnimation var(--animation-duration) forwards;
 
-			&::backdrop {
-				opacity: 0.2;
-			}
+		&::backdrop {
+			animation: backdropAnimation var(--animation-duration) forwards;
 		}
+	}
 
-		&.--opening {
-			animation: dialogAnimation 0.4s forwards;
+	&.--closing {
+		animation: dialogAnimation var(--animation-duration) forwards;
+		animation-direction: reverse;
 
-			&::backdrop {
-				animation: backdropAnimation 0.4s forwards;
-			}
-		}
-
-		&.--closing {
-			animation: dialogAnimation 0.4s forwards;
+		&::backdrop {
+			animation: backdropAnimation var(--animation-duration) forwards;
 			animation-direction: reverse;
-
-			&::backdrop {
-				animation: backdropAnimation 0.4s forwards;
-				animation-direction: reverse;
-			}
 		}
 	}
 
